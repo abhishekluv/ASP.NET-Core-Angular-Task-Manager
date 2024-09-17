@@ -7,7 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureIdentity();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.UseMemberCasing();
+});
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddJwtConfiguration(builder.Configuration);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

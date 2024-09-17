@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.Models.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -29,6 +30,11 @@ namespace CoreNgTaskManager.API.Extensions
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<RepositoryContext>()
             .AddDefaultTokenProviders();
+        }
+
+        public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
         }
     }
 }
