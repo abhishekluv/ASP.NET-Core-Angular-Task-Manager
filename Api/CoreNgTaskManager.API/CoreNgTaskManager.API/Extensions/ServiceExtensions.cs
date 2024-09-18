@@ -4,6 +4,8 @@ using Entities.Models.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Service;
+using Service.Contracts;
 
 namespace CoreNgTaskManager.API.Extensions
 {
@@ -41,6 +43,11 @@ namespace CoreNgTaskManager.API.Extensions
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryManager,  RepositoryManager>();
+        }
+
+        public static void ConfigureServiceManager(this IServiceCollection services)
+        {
+            services.AddScoped<IServiceManager, ServiceManager>();
         }
     }
 }
