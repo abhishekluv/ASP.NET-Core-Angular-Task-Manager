@@ -6,5 +6,6 @@ namespace Service.Contracts
     {
         Task<IEnumerable<TaskItemDto>> GetAllTaskItemsAsync(bool trackChanges);
         Task<TaskItemDto> GetTaskItemAsync(int id, bool trackChanges);
+        Task<TaskItemDto> CreateTaskItemAsync(TaskItemForCreationDto taskItemForCreationDto);
     }
 }

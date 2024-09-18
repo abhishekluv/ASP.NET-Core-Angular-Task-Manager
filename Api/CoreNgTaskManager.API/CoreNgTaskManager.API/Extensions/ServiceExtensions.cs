@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities.Models;
 using Entities.Models.Jwt;
+using LoggerService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -48,6 +49,11 @@ namespace CoreNgTaskManager.API.Extensions
         public static void ConfigureServiceManager(this IServiceCollection services)
         {
             services.AddScoped<IServiceManager, ServiceManager>();
+        }
+
+        public static void ConfigureLoggerManager(this IServiceCollection services)
+        {
+            services.AddScoped<ILoggerManager, LoggerManager>();
         }
     }
 }

@@ -15,6 +15,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureLoggerManager();
+builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

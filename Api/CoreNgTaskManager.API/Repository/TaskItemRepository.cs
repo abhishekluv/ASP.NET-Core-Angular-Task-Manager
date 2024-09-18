@@ -22,12 +22,37 @@ namespace Repository
 
         public async Task<IEnumerable<TaskItem>> GetAllTaskItemsAsync(bool trackChanges)
         {
-            return await FindAll(trackChanges).ToListAsync();
+            var taskItems = await FindAll(trackChanges).Select(task => new TaskItem
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                IsCompleted = task.IsCompleted,
+                CreatedAt = task.CreatedAt,
+                DueDate = task.DueDate,
+                User = new ApplicationUser
+                {
+                    UserName = task.User.UserName
+                }
+            }).ToListAsync();
+            return taskItems;
         }
 
         public async Task<TaskItem> GetTaskItemAsync(int id, bool trackChanges)
         {
-            return await FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(x => x.Id == id, trackChanges).Select(task => new TaskItem
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                IsCompleted = task.IsCompleted,
+                CreatedAt = task.CreatedAt,
+                DueDate = task.DueDate,
+                User = new ApplicationUser
+                {
+                    UserName = task.User.UserName
+                }
+            }).SingleOrDefaultAsync();
         }
     }
 }

@@ -32,9 +32,11 @@ namespace Service
             throw new NotImplementedException();
         }
 
-        public Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
+        public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<ApplicationUser>(userForRegistrationDto);
+            var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
+            return result;
         }
 
         public Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)

@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.Models;
 using Entities.Models.Jwt;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Service.Contracts;
@@ -13,9 +14,9 @@ namespace Service
         private readonly Lazy<ITaskItemService> _taskItemService;
         private readonly Lazy<IAuthenticationService> _authenticationService;
 
-        public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, ILoggerManager loggerManager, UserManager<ApplicationUser> userManager, IOptions<JwtConfiguration> configuration)
+        public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, ILoggerManager loggerManager, UserManager<ApplicationUser> userManager, IOptions<JwtConfiguration> configuration, IHttpContextAccessor httpContextAccessor)
         {
-            _taskItemService = new Lazy<ITaskItemService>(() => new TaskItemService(repositoryManager, mapper));
+            _taskItemService = new Lazy<ITaskItemService>(() => new TaskItemService(repositoryManager, mapper, httpContextAccessor));
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager,loggerManager, mapper,configuration));
         }
 
