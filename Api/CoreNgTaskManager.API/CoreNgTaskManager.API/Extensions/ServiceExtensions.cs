@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Contracts;
+using Entities.Models;
 using Entities.Models.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,11 @@ namespace CoreNgTaskManager.API.Extensions
         public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
+        }
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryManager,  RepositoryManager>();
         }
     }
 }
