@@ -26,7 +26,7 @@ namespace Service
             var taskItemToCreate = _mapper.Map<TaskItem>(taskItemForCreationDto);
 
             var userId = GetCurrentUserId();
-            taskItemToCreate.UserId = userId;
+            taskItemToCreate.UserId = userId.Value;
            
             _repositoryManager.TaskItems.CreateTaskItem(taskItemToCreate);
             await _repositoryManager.SaveAsync();

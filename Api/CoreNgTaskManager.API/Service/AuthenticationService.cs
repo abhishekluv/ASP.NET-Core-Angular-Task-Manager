@@ -4,8 +4,12 @@ using Entities.Models;
 using Entities.Models.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Service.Contracts;
 using Shared.Dtos;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Service
 {
@@ -27,11 +31,7 @@ namespace Service
             _configuration = configuration;
             _jwtConfiguration = _configuration.Value;
         }
-        public Task<JwtTokenDto> CreateToken()
-        {
-            throw new NotImplementedException();
-        }
-
+ 
         public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
         {
             var user = _mapper.Map<ApplicationUser>(userForRegistrationDto);
@@ -39,9 +39,50 @@ namespace Service
             return result;
         }
 
-        public Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)
+        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)
         {
-            throw new NotImplementedException();
+            _user = await _userManager.FindByNameAsync(userForAuthenticationDto.UserName);
+
+            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthenticationDto.Password));
+
+            return result;
+        }
+
+        public JwtTokenDto CreateToken()
+        {
+            var signingCredentials = GetSigningCredentials();
+            var claims = GetClaims();
+            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            var token = new JwtTokenDto() {  AccessToken = accessToken };
+
+            return token;
+        }
+
+        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
+        {
+            var tokenOptions = new JwtSecurityToken(issuer: _jwtConfiguration.ValidIssuer, audience: _jwtConfiguration.ValidAudience, claims: claims, signingCredentials: signingCredentials, expires: DateTime.Now.AddHours(Convert.ToDouble(_jwtConfiguration.Expires)));
+
+            return tokenOptions;
+        }
+
+        private SigningCredentials GetSigningCredentials()
+        {
+            var key = Encoding.UTF8.GetBytes(_jwtConfiguration.Key);
+            var secret = new SymmetricSecurityKey(key);
+            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
+        }
+
+        private List<Claim> GetClaims()
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, _user.UserName)
+            };
+
+            return claims;
         }
     }
 }

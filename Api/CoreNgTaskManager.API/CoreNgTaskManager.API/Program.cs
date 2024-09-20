@@ -1,4 +1,5 @@
 using CoreNgTaskManager.API.Extensions;
+using CoreNgTaskManager.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerManager();
 builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.AddScoped<ValidationFilterAttribute>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
