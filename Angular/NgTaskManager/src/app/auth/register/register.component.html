@@ -1,1 +1,70 @@
-<p>register works!</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- First Name -->
+    <div>
+      <label for="firstname">First Name</label>
+      <input id="firstname" type="text" formControlName="firstname" />
+      <div *ngIf="submitted && f['firstname'].errors" class="error">
+        <div *ngIf="f['firstname'].errors['required']">First Name is required</div>
+        <div *ngIf="f['firstname'].errors['minlength']">
+          First Name must be at least 2 characters long
+        </div>
+      </div>
+    </div>
+  
+    <!-- Last Name -->
+    <div>
+      <label for="lastname">Last Name</label>
+      <input id="lastname" type="text" formControlName="lastname" />
+      <div *ngIf="submitted && f['lastname'].errors" class="error">
+        <div *ngIf="f['lastname'].errors['required']">Last Name is required</div>
+        <div *ngIf="f['lastname'].errors['minlength']">
+          Last Name must be at least 2 characters long
+        </div>
+      </div>
+    </div>
+  
+    <!-- Username -->
+    <div>
+      <label for="username">Username</label>
+      <input id="username" type="text" formControlName="username" />
+      <div *ngIf="submitted && f['username'].errors" class="error">
+        <div *ngIf="f['username'].errors['required']">Username is required</div>
+        <div *ngIf="f['username'].errors['minlength']">
+          Username must be at least 4 characters long
+        </div>
+      </div>
+    </div>
+  
+    <!-- Email -->
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      <div *ngIf="submitted && f['email'].errors" class="error">
+        <div *ngIf="f['email'].errors['required']">Email is required</div>
+        <div *ngIf="f['email'].errors['email']">Invalid email format</div>
+      </div>
+    </div>
+  
+    <!-- Phone Number -->
+    <div>
+      <label for="phonenumber">Phone Number</label>
+      <input id="phonenumber" type="text" formControlName="phonenumber" />
+      <div *ngIf="submitted && f['phonenumber'].errors" class="error">
+        <div *ngIf="f['phonenumber'].errors['required']">Phone Number is required</div>
+      </div>
+    </div>
+  
+    <!-- Password -->
+    <div>
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      <div *ngIf="submitted && f['password'].errors" class="error">
+        <div *ngIf="f['password'].errors['required']">Password is required</div>
+        <div *ngIf="f['password'].errors['minlength']">
+          Password must be at least 6 characters long
+        </div>
+      </div>
+    </div>
+    <button type="submit">Register</button>
+  </form>
+  

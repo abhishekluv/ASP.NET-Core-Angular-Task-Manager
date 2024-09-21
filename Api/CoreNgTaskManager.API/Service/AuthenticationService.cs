@@ -41,7 +41,7 @@ namespace Service
 
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)
         {
-            _user = await _userManager.FindByNameAsync(userForAuthenticationDto.UserName);
+            _user = await _userManager.FindByEmailAsync(userForAuthenticationDto.Email);
 
             var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthenticationDto.Password));
 
@@ -56,7 +56,7 @@ namespace Service
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            var token = new JwtTokenDto() {  AccessToken = accessToken };
+            var token = new JwtTokenDto() {  Token = accessToken };
 
             return token;
         }

@@ -1,1 +1,3 @@
-<p>task-list works!</p>
+<ul *ngFor="let task of tasks">
+    <li>{{ task.Title }} {{ task.Description }} {{ task.UserName }}</li>
+</ul>
